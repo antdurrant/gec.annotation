@@ -19,7 +19,7 @@ annotate_gec <- function(input, force_handwriting = FALSE){
     if(class(input) == "character" & file.exists(input) & !force_handwriting){
         usethis::ui_info("Seeing if file can be parsed locally")
 
-        if(force_handwriting|!str_detect(file, "pdf$|PDF$")){
+        if(force_handwriting|!stringr::str_detect(file, "pdf$|PDF$")){
             usethis::ui_done("Passing file to handwriting API")
             # once it works
             annotate_pdf_handwriting(input)
