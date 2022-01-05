@@ -5,7 +5,7 @@
 #' @param forge whether to use forge
 #' @param channel specific channels to prefer
 #' @param conda which conda to use
-#' @param python_version which python version to use - defaults to 3.8 for guaranteed compatibility
+#' @param python_version which python versionexists to use - defaults to 3.8 for guaranteed compatibility
 #'
 #' @return a python environment with requisite packages names "gec_env"
 #' @export
@@ -43,7 +43,15 @@ gec_env_create <- function(
 #' @export
 #'
 gec_env_use <- function(envname = "gec_env"){
+
+    if(exists("spacy_version") & exists("nlp")){
+        usethis::ui_done("Python ready")
+    }
+    if(!exists("spacy_version")){
     spacyr::spacy_initialize(condaenv = envname)
+    }
+    if(!exists("nlp")){
     reticulate::source_python(system.file("python/sentence.py", package = "gec.annotation"), envir = globalenv())
-    usethis::ui_done("sentence.py successfully sourced")
+        usethis::ui_done("sentence.py successfully sourced")
+    }
 }
