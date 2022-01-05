@@ -47,8 +47,7 @@ annotate_text <- function(digital_text){
                 # handle
                 stringr::str_replace_all("s['|\u2019](?!re\\b|ll\\b|ve\\b|\\b,|\\.|\\:|\\;|-)", "s' ") %>%
                 stringr::str_squish() %>%
-                tidyr::replace_na(text, "This sentence has problems that model cannot understand."),
-
+                tidyr::replace_na("This sentence has problems that model cannot understand."),
             doc_id = dplyr::row_number()
 
         )
