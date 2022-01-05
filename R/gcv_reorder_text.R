@@ -13,10 +13,10 @@
 #'
 gcv_reorder_text <- function(data){
 
-    image_path<- x_left<- x_right<- x<- y_top<- y_bottom<- y <-
-        description <- y_round <- y_lag <- y_order <-token <- remove <-
-        order_id <-
-        NULL
+    # image_path<- x_left<- x_right<- x<- y_top<- y_bottom<- y <-
+    #     description <- y_round <- y_lag <- y_order <-token <- remove <-
+    #     order_id <-
+    #     NULL
 
     usethis::ui_info("Organizing text")
 
@@ -25,7 +25,8 @@ gcv_reorder_text <- function(data){
     # the absolute top and bottom of the page
     adjust_size <- (max(data$y_bottom) - min(data$y_top)) /100
 
-    data %>%
+  res <-
+      data %>%
         dplyr::group_by(image_path, x_left, x_right, x, y_top, y_bottom, y) %>%
         dplyr::summarise(token = paste(description, collapse = "")) %>%
         dplyr::ungroup() %>%
@@ -64,9 +65,10 @@ gcv_reorder_text <- function(data){
                       token = tokenizers::tokenize_words(token, lowercase = FALSE, strip_punct = FALSE)) %>%
         tidyr::unnest(token) %>%
         dplyr::filter(nchar(token) > 0) %>%
-
         # ---
         dplyr::mutate(order_id = dplyr::row_number())
 
-    usethis::ui_done("Text organized")
+    # usethis::ui_done("Text organized")
+    res
 }
+

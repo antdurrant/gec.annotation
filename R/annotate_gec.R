@@ -49,7 +49,7 @@ annotate_gec <- function(input, force_handwriting = FALSE){
                     dplyr::select(doc_id, original, corrected, changes, correction_diff_standard)
             )
     } else{
-        usethis::ui_nope("You need to feed this text or a file; returning useless output.")
+        usethis::ui_oops("You need to feed this text or a file; returning useless output.")
         list(images = NULL,
              corrections = tibble::tibble(text = "You have to give me some text first."))
     }
