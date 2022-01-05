@@ -44,13 +44,15 @@ annotate_text <- function(digital_text){
                 stringr::str_replace_all("\u201D \\.", "\u201D.") %>%
                 stringr::str_replace_all("\u201D ,", "\u201D,") %>%
                 stringr::str_replace_all("ES (?=\\d)", "ES") %>%
+                # handle
+                stringr::str_replace_all("s['|\u2019](?!re\\b|ll\\b|ve\\b|\\b,|\\.|\\:|\\;|-)", "s' ") %>%
                 stringr::str_squish(),
             doc_id = dplyr::row_number()
 
         )
 
     # find them ...
-    find_spelling_mistakes <-　
+    find_spelling_mistakes <-
         spacyr::spacy_parse(
             text,
             lemma = FALSE,

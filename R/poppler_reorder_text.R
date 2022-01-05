@@ -47,7 +47,7 @@ poppler_reorder_text <- function(pdf_file){
                 tokenizers::tokenize_words(lowercase = FALSE, strip_punct = FALSE)) %>%
         tidyr::unnest(text) %>%
         # it also tokenizes on '
-        dplyr::mutate(text = tokenizers::tokenize_regex(text, pattern = "(?=['|’])")) %>%
+        dplyr::mutate(text = tokenizers::tokenize_regex(text, pattern = "(?=['|\u2019])")) %>%
         tidyr::unnest(text) %>%
         dplyr::mutate(order_id = dplyr::row_number())
 
