@@ -4,7 +4,7 @@ gcv_write_annotations <- function(image, annotations){
 
     digital_pdf <- magick::image_read(image)
 
-    adjust_size <- round(magick::image_info(image)$height) /100
+    adjust_size <- round(magick::image_info(digital_pdf)$height) /100
 
     annotations <- annotations %>%
         dplyr::filter(image_path == image)
