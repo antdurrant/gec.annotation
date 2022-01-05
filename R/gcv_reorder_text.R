@@ -19,7 +19,7 @@ gcv_reorder_text <- function(data){
         order_id <-
         NULL
 
-    usethis::ui_indo("Organizing text")
+    usethis::ui_info("Organizing text")
 
 
     # something like 1% of total pagesize - assuming text does not reach

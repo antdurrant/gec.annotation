@@ -1,5 +1,6 @@
 #' create grammar error correction python environment
 #'
+#' @param envname name of environment if you don't want to use the default
 #' @param packages packages to include beyond those specified in requirements.txt (none should be necessary)
 #' @param forge whether to use forge
 #' @param channel specific channels to prefer
