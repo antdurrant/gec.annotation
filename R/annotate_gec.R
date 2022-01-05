@@ -19,15 +19,15 @@ annotate_gec <- function(input, force_handwriting = FALSE){
     if(class(input) == "character" & file.exists(input) & !force_handwriting){
         usethis::ui_info("Seeing if file can be parsed locally")
 
-        if(force_handwriting){
+        if(force_handwriting|!str_detect(file, "pdf$|PDF$")){
             usethis::ui_done("Passing file to handwriting API")
             # once it works
             annotate_pdf_handwriting(input)
         }
 
-        check_for_scan <- paste(pdftools::pdf_info(input)$keys, collapse = " ")
 
         if(!force_handwriting){
+            check_for_scan <- paste(pdftools::pdf_info(input)$keys, collapse = " ")
             if(pdftools::pdf_text(input) %>%
                paste(collapse = "") %>%
                nchar()>10 &
