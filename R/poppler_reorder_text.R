@@ -47,14 +47,10 @@ poppler_reorder_text <- function(pdf_file){
                 tokenizers::tokenize_words(lowercase = FALSE, strip_punct = FALSE)) %>%
         tidyr::unnest(text) %>%
         # it also tokenizes on '
-        dplyr::mutate(test = tokenizers::tokenize_regex(text, pattern = "(?=['|’])")) %>%
-        tidyr::unnest(test) %>%
+        dplyr::mutate(text = tokenizers::tokenize_regex(text, pattern = "(?=['|’])")) %>%
+        tidyr::unnest(text) %>%
         dplyr::mutate(order_id = dplyr::row_number())
 
     digital_text_df
 }
 
-
-tibble::tibble(text = c("today's", "that'll")) %>%
-    dplyr::mutate(new = tokenizers::tokenize_regex(text, pattern = "(?=')")) %>%
-    tidyr::unnest(new)

@@ -44,8 +44,8 @@ annotate_gec <- function(input, force_handwriting = FALSE){
     } else if(class(input) == "character"){
         result <-
             list(
-                image = NULL,
-                correction_table = annotate_text(input) %>%
+                images = NULL,
+                corrections = annotate_text(input) %>%
                     dplyr::select(doc_id, original, corrected, changes, correction_diff_standard)
             )
     } else{

@@ -24,7 +24,7 @@ gec_env_create(
 
 \item{conda}{which conda to use}
 
-\item{python_version}{which python version to use - defaults to 3.8 for guaranteed compatibility}
+\item{python_version}{which python versionexists to use - defaults to 3.8 for guaranteed compatibility}
 }
 \value{
 a python environment with requisite packages names "gec_env"
