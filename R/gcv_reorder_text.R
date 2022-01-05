@@ -11,7 +11,6 @@
 #' @return a reordered tibble with additional information
 #' @export
 #'
-#' @examples
 gcv_reorder_text <- function(data){
 
     image_path<- x_left<- x_right<- x<- y_top<- y_bottom<- y <-

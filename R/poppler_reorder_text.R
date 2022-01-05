@@ -8,7 +8,6 @@
 #' @return data.frame of tokens and locations
 #' @export
 #'
-#' @examples
 poppler_reorder_text <- function(pdf_file){
 
     x_right <- x_left <- x <- y <- y_top <- y_bottom <-

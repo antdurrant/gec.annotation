@@ -1,7 +1,17 @@
+#' poppler pdf text pipeline
+#'
+#' takes a file, returns a table of corrected sentences and annotated images
+#'
+#' @param pdf_file file for correction
+#'
+#' @return a list: $images = imagemagick image pointer, corrections = table output from `annotate_text`
+#'
+#' @export
+#'
 annotate_pdf_digital <- function(pdf_file){
 
     doc_id <- original <- text <- changes <- correction_diff_standard <-
-        page <-
+        page <- corrected <-
         NULL
 
 
@@ -57,10 +67,10 @@ annotate_pdf_digital <- function(pdf_file){
 
     usethis::ui_done("Annotation complete!")
 
-    result <- list(image =  magick::image_scale(digital_pdf, geometry = magick::geometry_size_percent(400)),
-                   correction_table =
+    result <- list(images =  magick::image_scale(digital_pdf, geometry = magick::geometry_size_percent(400)),
+                   corrections =
                        two_step_correction %>%
-                       dplyr::select(doc_id, original, corrected = text, changes, correction_diff_standard)
+                       dplyr::select(doc_id, original, corrected, changes, correction_diff_standard)
     )
 
     result

@@ -4,9 +4,11 @@
 #'
 #' @param file file for correction
 #'
+#' @return a list: $images = imagemagick image pointer, corrections = table output from `annotate_text`
 #' @export
 #'
 annotate_pdf_handwriting <- function(file){
+
 
     # split if necessary
     files <- gcv_check_filetypes(file)

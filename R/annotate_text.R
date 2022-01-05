@@ -5,7 +5,7 @@
 #'
 #' @param digital_text character vector
 #'
-#' @return a tibble
+#' @return a tibble of sentences with columns: `doc_id`, `original`, `correction_diff_standard` (standard [--] & {++} notation), `changes` (html `ins` and `del` tags)
 #' @export
 #'
 #' @examples
@@ -99,9 +99,9 @@ annotate_text <- function(digital_text){
                           stringr::str_replace_all("\\[-", "<del>") %>%
                           stringr::str_replace_all("-\\]", "</del>") %>%
                           stringr::str_replace_all("\\{\\+", "<ins>") %>%
-                          stringr::str_replace_all("\\+\\}", "</ins>"))
+                          stringr::str_replace_all("\\+\\}", "</ins>")) %>%
+        dplyr::rename(corrected = text)
     usethis::ui_done("Complete!")
     output
 }
-stringi::stri_escape_unicode("[{]}<>")
-stringi::stri_unescape_unicode("[{]}<>")
+

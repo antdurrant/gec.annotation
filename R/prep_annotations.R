@@ -10,7 +10,6 @@
 #' @return data.frame with annotation data
 #' @export
 #'
-#' @examples
 prep_annotations <- function(annotated_text, digital_text_df){
 
 

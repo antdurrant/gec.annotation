@@ -10,7 +10,7 @@ annotate_text(digital_text)
 \item{digital_text}{character vector}
 }
 \value{
-a tibble
+a tibble of sentences with columns: `doc_id`, `original`, `correction_diff_standard` (standard [--] & {++} notation), `changes` (html `ins` and `del` tags)
 }
 \description{
 takes a character vector and runs grammar error correction on it

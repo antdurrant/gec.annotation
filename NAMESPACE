@@ -2,6 +2,7 @@
 
 export("%>%")
 export(annotate_gec)
+export(annotate_pdf_digital)
 export(annotate_pdf_handwriting)
 export(annotate_text)
 export(extract_digital_text)

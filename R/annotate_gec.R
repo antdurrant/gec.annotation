@@ -11,7 +11,7 @@
 #'
 annotate_gec <- function(input, force_handwriting = FALSE){
 
-    doc_id <- original <- text <- changes <- correction_diff_standard <-
+    doc_id <- original <- corrected <- changes <- correction_diff_standard <-
         NULL
 
 
@@ -46,12 +46,12 @@ annotate_gec <- function(input, force_handwriting = FALSE){
             list(
                 image = NULL,
                 correction_table = annotate_text(input) %>%
-                    dplyr::select(doc_id, original, corrected = text, changes, correction_diff_standard)
+                    dplyr::select(doc_id, original, corrected, changes, correction_diff_standard)
             )
     } else{
         usethis::ui_nope("You need to feed this text or a file; returning useless output.")
-        list(image = NULL,
-             correction_table = tibble::tibble(text = "You have to give me some text first."))
+        list(images = NULL,
+             corrections = tibble::tibble(text = "You have to give me some text first."))
     }
 
 }
