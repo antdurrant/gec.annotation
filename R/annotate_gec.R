@@ -23,10 +23,7 @@ annotate_gec <- function(input, force_handwriting = FALSE){
             usethis::ui_done("Passing file to handwriting API")
             # once it works
             annotate_pdf_handwriting(input)
-        }
-
-
-        if(!force_handwriting){
+        } else if(!force_handwriting){
             check_for_scan <- paste(pdftools::pdf_info(input)$keys, collapse = " ")
             if(pdftools::pdf_text(input) %>%
                paste(collapse = "") %>%
