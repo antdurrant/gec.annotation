@@ -13,7 +13,7 @@
 #' @export
 #'
 gcv_check_filetypes <- function(file){
-    if(stringr::str_detect(file, "pdf$")){
+    if(stringr::str_detect(file, "pdf$|PDF$")){
         pgs <- seq_len(pdftools::pdf_info(file)$pages)
 
         tmp <- tempdir()
@@ -24,11 +24,11 @@ gcv_check_filetypes <- function(file){
                 filenames = c(paste0(tmp, "/", pgs, ".png")),
                 dpi = 300
             )
-    } else if(stringr::str_detect(file, "png$|jpg$|jpeg$|tiff$")){
+    } else if(stringr::str_detect(file, "png$|jpg$|jpeg$|tiff$|PNG$|JPG$|JPEG$|TIFF$")){
         outfiles <- file
     } else {
         outfiles <- NULL
-        usethis::ui_nope("No parsable files for sending to API. Files must be images or pdfs.")
+        usethis::ui_oops("No parsable files for sending to API. Files must be images or pdfs.")
     }
     outfiles
 }
