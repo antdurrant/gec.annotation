@@ -19,7 +19,7 @@ poppler_reorder_text <- function(pdf_file){
     adjust_size <- round(max(pdftools::pdf_pagesize(pdf_file)$"bottom"))/100
 
 
-    colnames(pdftools::pdf_pagesize(pdf_file))
+
     # pdf text with xy coords
     digital_text_df <-
         tibble::tibble(data = pdftools::pdf_data(pdf_file)) %>%
@@ -46,7 +46,15 @@ poppler_reorder_text <- function(pdf_file){
                 dplyr::if_else(text == "cannot", "can not", text) %>%
                 tokenizers::tokenize_words(lowercase = FALSE, strip_punct = FALSE)) %>%
         tidyr::unnest(text) %>%
+        # it also tokenizes on '
+        dplyr::mutate(test = tokenizers::tokenize_regex(text, pattern = "(?=['|’])")) %>%
+        tidyr::unnest(test) %>%
         dplyr::mutate(order_id = dplyr::row_number())
 
     digital_text_df
 }
+
+
+tibble::tibble(text = c("today's", "that'll")) %>%
+    dplyr::mutate(new = tokenizers::tokenize_regex(text, pattern = "(?=')")) %>%
+    tidyr::unnest(new)
