@@ -47,6 +47,7 @@ annotate_text <- function(digital_text){
                 # handle
                 stringr::str_replace_all("s['|\u2019](?!re\\b|ll\\b|ve\\b|\\b,|\\.|\\:|\\;|-)", "s' ") %>%
                 stringr::str_squish(),
+            text = replace_na(text, "sentence has problems that model cannot understand"),
             doc_id = dplyr::row_number()
 
         )
@@ -68,6 +69,7 @@ annotate_text <- function(digital_text){
         dplyr::mutate(is_word = hunspell::hunspell_check(token)) %>%
         dplyr::filter(!is_word) %>%
         dplyr::mutate(suggestion = purrr::map_chr(token, ~unlist(hunspell::hunspell_suggest(.x))[1]))
+
     usethis::ui_info("Checking spelling")
     # ... replace them
     if(nrow(find_spelling_mistakes) > 0){
