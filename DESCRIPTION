@@ -31,3 +31,5 @@ Imports:
     tidytext,
     tokenizers,
     usethis
+URL: https://github.com/antdurrant/gec.annotation
+BugReports: https://github.com/antdurrant/gec.annotation/issues
