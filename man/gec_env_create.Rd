@@ -10,7 +10,7 @@ gec_env_create(
   forge = TRUE,
   channel = character(),
   conda = "auto",
-  python_version = 3.8
+  python_version = 3.9
 )
 }
 \arguments{
