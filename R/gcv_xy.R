@@ -10,7 +10,7 @@ gcv_xy <- function(data) {
     x <- y <-
         NULL
 
-    usethis::ui_info("Checking location data")
+    usethis::ui_info("Checking word locations on page")
 
     data %>%
         dplyr::mutate(
