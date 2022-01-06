@@ -16,7 +16,7 @@ gec_env_create <- function(
     forge = TRUE,
     channel = character(),
     conda = "auto",
-    python_version = 3.8
+    python_version = 3.9
 ){
 
     pkgs <- c(
@@ -33,6 +33,8 @@ gec_env_create <- function(
         python_version = python_version,
         pip = TRUE
     )
+
+    spacyr::spacy_download_langmodel(envname = envname)
 }
 
 #' use gec env and load python grammar error correction function
