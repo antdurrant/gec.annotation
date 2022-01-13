@@ -11,7 +11,10 @@ annotate_pdf_handwriting <- function(file){
 
 
     # split if necessary
-    files <- gcv_check_filetypes(file)
+    files <- gcv_check_filetypes(file) %>%
+        orient_files()
+
+
 
     # call api
     api_return <- googleCloudVisionR::gcv_get_image_annotations(
