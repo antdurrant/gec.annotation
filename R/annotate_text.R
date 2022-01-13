@@ -68,7 +68,8 @@ annotate_text <- function(digital_text){
                       nchar(token) > 1) %>%
         dplyr::mutate(is_word = hunspell::hunspell_check(token)) %>%
         dplyr::filter(!is_word) %>%
-        dplyr::mutate(suggestion = purrr::map_chr(token, ~unlist(hunspell::hunspell_suggest(.x))[1]))
+        dplyr::mutate(suggestion = purrr::map_chr(token, ~unlist(hunspell::hunspell_suggest(.x))[1])) %>%
+        dplyr::filter(!is.na(suggestion))
 
     usethis::ui_info("Checking spelling")
     # ... replace them
