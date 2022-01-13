@@ -13,10 +13,10 @@
 #'
 gcv_reorder_text <- function(data){
 
-    # image_path<- x_left<- x_right<- x<- y_top<- y_bottom<- y <-
-    #     description <- y_round <- y_lag <- y_order <-token <- remove <-
-    #     order_id <-
-    #     NULL
+    image_path<- x_left<- x_right<- x<- y_top<- y_bottom<- y <-
+        description <- y_round <- y_lag <- y_order <-token <- remove <-
+        order_id <-
+        NULL
 
     usethis::ui_info("Organizing text")
 
