@@ -1,17 +1,19 @@
 #' annotate digital text
 #'
-#' takes a character vector and runs grammar error correction on it
-#' requires `gec_env` to be used, spacy to be instantiated, and sentence.py to have been sourced
+#' Takes a character vector and runs grammar error correction on it.
+#' Requires `gec_env` to be used, spacy to be instantiated, and sentence.py to have been sourced.
+#' Post-grammar-error correction, a combination of word2vec and hunspell are used to (hopefully)
+#' intelligently add some spelling correction as well.
 #'
 #' @param digital_text character vector
+#' @param mod word2vec model (as produced by `word2vec::word2vec(word2vec::txt_clean_word2vec({your texts}))`)
 #'
 #' @return a tibble of sentences with columns: `doc_id`, `original`, `correction_diff_standard` (standard [--] & {++} notation), `changes` (html `ins` and `del` tags)
 #' @export
 #'
 #' @examples
 #' #annotate_text("Ma, does ye have any potatos?")
-annotate_text <- function(digital_text){
-
+annotate_text <- function(digital_text, mod){
 
     original <- pos <- token <- is_word <- . <-
         correction_diff_standard <-
@@ -19,8 +21,6 @@ annotate_text <- function(digital_text){
 
     usethis::ui_info("Running grammar error correction model")
     # calling out to the python GEC model
-    # putting both original sentences and corrected sentences in tempfiles so
-    # we can do wdiffs on them
     text <-
         tibble::tibble(text = digital_text) %>%
         tidytext::unnest_sentences(
@@ -52,6 +52,10 @@ annotate_text <- function(digital_text){
 
         )
 
+    # embeddings
+    emb <- as.matrix(mod)
+    doc_mod <- word2vec::doc2vec(mod, digital_text)
+
     # find them ...
     find_spelling_mistakes <-
         spacyr::spacy_parse(
@@ -66,17 +70,41 @@ annotate_text <- function(digital_text){
                       !stringr::str_detect(token, "[:punct:]|\\+"),
                       # single letter spelling mistakes are probably wrong
                       nchar(token) > 1) %>%
-        dplyr::mutate(is_word = hunspell::hunspell_check(token)) %>%
-        dplyr::filter(!is_word) %>%
-        dplyr::mutate(suggestion = purrr::map_chr(token, ~unlist(hunspell::hunspell_suggest(.x))[1])) %>%
-        dplyr::filter(!is.na(suggestion))
+        dplyr::filter(!hunspell::hunspell_check(token))
+
+    # only get suggestions if there are any words
+    if(nrow(find_spelling_mistakes) > 0){
+        find_spelling_mistakes <-
+            find_spelling_mistakes %>%
+            dplyr::mutate(suggestion = hunspell::hunspell_suggest(token)) %>%
+            tidyr::unnest(suggestion) %>%
+            tidytext::unnest_tokens(output = "word", input = suggestion, drop = FALSE) %>%
+            dplyr::group_by(token, suggestion) %>%
+            dplyr::filter(all(word %in% rownames(emb)))
+    }
+
+    # only do predictions if there are any possible ones
+    if(nrow(find_spelling_mistakes) > 0){
+        find_spelling_mistakes <-
+            find_spelling_mistakes %>%
+            dplyr::mutate(pred = purrr::map(tolower(word), ~stats::predict(mod, .x, type = "embedding"))) %>%
+            dplyr::mutate(similarity = purrr::map(pred, ~word2vec::word2vec_similarity(doc_mod, .x, top_n = 1))) %>%
+            tidyr::unnest(similarity) %>%
+            dplyr::group_by(token, suggestion) %>%
+            dplyr::mutate(token = paste0("\\b", token, "\\b")) %>%
+            dplyr::summarise(simil = mean(similarity)) %>%
+            dplyr::ungroup() %>%
+            dplyr::group_by(token) %>%
+            dplyr::filter(simil == max(simil)) %>%
+            dplyr::filter(row_number() == 1) %>%
+            dplyr::ungroup()
+    }
 
     usethis::ui_info("Checking spelling")
     # ... replace them
     if(nrow(find_spelling_mistakes) > 0){
 
         two_step_correction <-
-
             text %>%
             dplyr::mutate(text =
                               text %>%

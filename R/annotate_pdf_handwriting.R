@@ -3,11 +3,12 @@
 #' takes a file, returns a table of corrected sentences and annotated images
 #'
 #' @param file file for correction
+#' @param mod word2vec model for spelling correction
 #'
 #' @return a list: $images = imagemagick image pointer, corrections = table output from `annotate_text`
 #' @export
 #'
-annotate_pdf_handwriting <- function(file){
+annotate_pdf_handwriting <- function(file, mod){
 
 
     # split if necessary
@@ -21,6 +22,7 @@ annotate_pdf_handwriting <- function(file){
         files,
         "DOCUMENT_TEXT_DETECTION"
     )
+
     usethis::ui_done("Text data retrieved")
 
     # order
@@ -33,7 +35,7 @@ annotate_pdf_handwriting <- function(file){
     corrections <-
         dat %>%
         extract_digital_text() %>%
-        annotate_text()
+        annotate_text(mod)
 
     # find where to annotate
     annotations <- prep_annotations(annotated_text = corrections, digital_text_df = dat)
