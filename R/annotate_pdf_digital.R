@@ -3,12 +3,13 @@
 #' takes a file, returns a table of corrected sentences and annotated images
 #'
 #' @param pdf_file file for correction
+#' @param mod word2vec model for spelling correction
 #'
 #' @return a list: $images = imagemagick image pointer, corrections = table output from `annotate_text`
 #'
 #' @export
 #'
-annotate_pdf_digital <- function(pdf_file){
+annotate_pdf_digital <- function(pdf_file, mod){
 
     doc_id <- original <- text <- changes <- correction_diff_standard <-
         page <- corrected <-
@@ -29,7 +30,7 @@ annotate_pdf_digital <- function(pdf_file){
     adjust_size <- round(max(digital_text_df$y), 0) / 75
 
     # extracted functions
-    two_step_correction <- annotate_text(digital_text)
+    two_step_correction <- annotate_text(digital_text, mod)
 
     annotations <- prep_annotations(annotated_text = two_step_correction, digital_text_df = digital_text_df)
 
