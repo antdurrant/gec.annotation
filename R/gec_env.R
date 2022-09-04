@@ -20,7 +20,11 @@ gec_env_create <- function(
 ){
 
     pkgs <- c(
-        c("spacy==3.2.0", "spacy-legacy==3.0.8", "spacy-loggers==1.0.1", "blis==0.7.5", "catalogue==2.0.6", "charset-normalizer==2.0.8", "click==8.0.3", "cymem==2.0.6", "filelock==3.4.0", "huggingface-hub==0.1.2", "idna==3.3", "importlib-metadata==4.8.2", "jinja2==3.0.3", "joblib==1.1.0", "langcodes==3.3.0", "markupsafe==2.0.1", "murmurhash==1.0.6", "nltk==3.6.5", "numpy==1.21.4", "packaging==21.3", "pathy==0.6.1", "pillow==8.4.0", "preshed==3.0.6", "pydantic==1.8.2", "pyparsing==3.0.6", "pyyaml==6.0", "regex==2021.11.10", "requests==2.26.0", "sacremoses==0.0.46", "sentencepiece==0.1.96", "six==1.16.0", "smart-open==5.2.1", "srsly==2.4.2", "thinc==8.0.13", "tokenizers==0.10.3", "torch==1.10.0", "tqdm==4.62.3", "transformers==4.12.5", "typer==0.4.0", "typing-extensions==3.10.0.2", "urllib3==1.26.7", "wasabi==0.8.2", "zipp==3.6.0"),
+        c("spacy>=3.2.0",
+          "huggingface-hub>=0.1",
+          "torch>=1.10.0",
+          "transformers>=4.12"
+        ),
        packages
     )
 
@@ -34,7 +38,7 @@ gec_env_create <- function(
         pip = TRUE
     )
 
-    spacyr::spacy_download_langmodel(envname = envname)
+    spacyr::spacy_download_langmodel(envname = envname, model = "en_core_web_sm'")
 }
 
 #' use gec env and load python grammar error correction function

@@ -1,7 +1,7 @@
 Package: gec.annotation
 Type: Package
 Title: Grammar Error Correction and Annotation
-Version: 0.1.01
+Version: 0.1.2
 Author: Anthony Durrant
 Maintainer: Anthony Durrant <antdurrant@gmail.com>
 Description: Runs grammar error correction model on plain text, 
